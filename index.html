@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <title>GIFFANY CÓMICS</title>
+  <!-- Vinculación al archivo CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Vinculación al archivo JavaScript -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="left-icon" id="menu-icon">
+      <img src="https://i.ibb.co/Xr9kFs6p/menus.png" alt="Icono Izquierda">
+    </div>
+    <div class="app-title">
+      <img src="https://i.ibb.co/v42tFr9p/IMG-20250213-101104.png" alt="Logo">
+    </div>
+    <div class="right-icon">
+      <img src="https://i.ibb.co/Nnt4dtL6/lupa.png" alt="Icono Derecha" id="search-icon">
+    </div>
+  </header>
+  
+  <div class="search-bar" id="searchBar">
+    <input type="text" placeholder="ʙᴜsᴄᴀʀ...." id="searchInput">
+  </div>
+  
+  <div class="gallery" id="gallery">
+    <!-- Se cargarán las imágenes de la galería principal -->
+  </div>
+  
+  <div class="pagination">
+    <button id="prevButton" onclick="prevPage()">ᴀɴᴛᴇʀɪᴏʀ</button>
+    <span class="page-number" id="pageNumber">1</span>
+    <button id="nextButton" onclick="nextPage()">Sɪɢᴜɪᴇɴᴛᴇ</button>
+  </div>
+  
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">ᴍᴇɴᴜ́ ᴅᴇ ᴏᴘᴄɪᴏɴᴇs</div>
+    <img src="https://i.ibb.co/gMbg3d1X/borrar-1.png" alt="Cerrar Menú" class="close-icon" id="closeMenuIcon">
+    <details class="tags-menu">
+      <summary>📦 ᴄᴀᴛᴇɢᴏʀɪ́ᴀs</summary>
+      <a href="#" onclick="showAll()">📚 ᴠᴇʀ ᴛᴏᴅᴏ</a>
+      <a href="#" onclick="showLastAdded()">🔥 ʀᴇᴄɪᴇɴᴛᴇs</a>
+      <a href="#" onclick="showFavorites()">❤️‍🔥 ᴍɪs ғᴀᴠᴏʀɪᴛᴏs</a>
+    </details>
+    <details class="tags-menu">
+      <summary>🎨 ᴘᴇʀsᴏɴᴀʟɪᴢᴀᴄɪᴏ́ɴ</summary>
+      <a href="#" id="uploadBackgroundOption">📤 sᴜʙɪʀ ғᴏɴᴅᴏ</a>
+      <a href="#" onclick="toggleTheme()">🎨 ᴄᴀᴍʙɪᴀʀ ᴄᴏʟᴏʀ</a>
+      <div style="padding: 10px 15px;">
+        <label for="excludeTags" style="display: block; margin-bottom: 5px; font-size: 14px; color: white;">
+         🚫 ᴏᴄᴜʟᴛᴀʀ ᴄᴏ́ᴍɪᴄs
+        </label>
+        <input type="text" id="excludeTags" placeholder="ᴇᴊ﹕ ᴅɪsɴᴇʏ﹐ ʟᴇsʙɪᴀɴᴀs">
+      </div>
+    </details>
+    <details class="tags-menu">
+      <summary>📚 ᴄᴏʟᴜᴍɴᴀs ᴅᴇ ᴄᴏ́ᴍɪᴄs</summary>
+      <a href="#" onclick="setColumns(1)">⚙️ 𝟷 ᴄᴏʟᴜᴍɴᴀ</a>
+      <a href="#" onclick="setColumns(2)">⚙️ 𝟸 ᴄᴏʟᴜᴍɴᴀ</a>
+      <a href="#" onclick="setColumns(3)">⚙️ 𝟹 ᴄᴏʟᴜᴍɴᴀ</a>
+    </details>
+    <details class="tags-menu">
+      <summary>🏷 ᴇᴛɪϙᴜᴇᴛᴀs</summary>
+      <div class="tags-options">
+        <a href="#" onclick="filterByTag('Hentai')">🔍 ʜᴇɴᴛᴀɪ</a>
+      </div>
+    </details>
+    <details class="tags-menu">
+      <summary>⛑️ Sᴏᴘᴏʀᴛᴇ</summary>
+      <a href="#" id="sendMessageOption">✉️ ᴇɴᴠɪᴀʀ ᴜɴ ᴍᴇɴsᴀᴊᴇ</a>
+    </details>
+  </div>
+  
+  <div id="menuOverlay" class="menu-overlay"></div>
+  
+  <input type="file" id="backgroundUploader" accept="image/*" style="display: none;">
+  
+  <!-- ================== DETAIL VIEW (MODAL) CON ZOOM ================== -->
+  <div id="detailModal" class="detail-modal">
+    <div class="detail-header">
+      <span class="detail-title" id="detailTitle">Título de la imagen</span>
+      <button class="detail-close" id="detailClose">✖</button>
+    </div>
+    <div id="detailScrollContainer">
+      <div id="detailZoomContainer">
+        <div class="detail-gallery" id="detailGallery"></div>
+      </div>
+    </div>
+    <div class="zoom-buttons">
+      <button id="zoom-in">+</button>
+      <button id="zoom-out">–</button>
+    </div>
+  </div>
+  
+  <!-- ================== MODAL PARA ENVIAR MENSAJE ================== -->
+  <div id="messageModal" class="message-modal">
+    <div class="message-modal-content">
+      <div class="message-modal-header">
+        <h2>ᴇɴᴠɪᴀʀ ᴍᴇɴsᴀᴊᴇ</h2>
+        <span class="message-modal-close" id="messageModalClose">×</span>
+      </div>
+      <div class="message-modal-body">
+        <form id="messageForm">
+          <label for="messageName">ɴᴏᴍʙʀᴇ:</label>
+          <input type="text" id="messageName" name="messageName" placeholder="ᴛᴜ́ ɴᴏᴍʙʀᴇ ᴅᴇ ᴛᴇʟᴇɢʀᴀᴍ" required>
+          <label for="messageContent">ᴍᴇɴsᴀᴊᴇ:</label>
+          <textarea id="messageContent" name="messageContent" placeholder="" rows="4" required></textarea>
+          <div class="button-container">
+            <button type="button" id="selectImageButton">ᴀᴅᴊᴜɴᴛᴀʀ ɪᴍᴀɢᴇɴ</button>
+            <button type="submit">ᴇɴᴠɪᴀʀ</button>
+          </div>
+          <input type="file" id="messageImageInput" name="messageImage" accept="image/*" style="display: none;">
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ================== RECUADRO DE MENSAJE EXITOSO ================== -->
+  <div id="messageSent"></div>
+</body>
+</html>
